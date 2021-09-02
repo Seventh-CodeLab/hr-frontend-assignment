@@ -7,9 +7,17 @@ server.listen(port, () => {
   console.log(`Server listening at ${port}`);
 });
 
-server.get(['/api/ships', '/api/ships/:query'], (req, res) => {
-  const query = req.params.query;
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin","*"); // Added to prevent localhost CORS issues
+  res.header("Access-Control-Allow-Headers","*"); // Added to prevent localhost CORS issues
+  next();
+})
 
+server.get(['/api/ships', '/api/ships/:query'], (req, res) => {
+  
+  
+  const query = req.params.query;
+  
   if (!query) {
     return res.json(ships);
   }
