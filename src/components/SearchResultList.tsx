@@ -10,6 +10,7 @@ type SearchResultListProps = {
 const SearchResultList = (props : SearchResultListProps) => {
     const [sortedBy, setSortedBy] = useState<string>()
 
+    // Sorts the search result passed in props
     const sortBy = (byValue : string) => {
         switch (byValue) {
             case "name":

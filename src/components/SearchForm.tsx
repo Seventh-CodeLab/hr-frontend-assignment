@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import _ from 'lodash';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import IShip from '../models/IShip';
 
@@ -11,15 +12,15 @@ const SearchForm = ({setSearchResult, setIsLoading} : SearchFormProps) => {
 
     const [search, setSearch] = useState<string>("");
 
-    const DoSearch = (e: any) => {
-        Submit(e);
+    const Submit = (e : any) => {
+        e.preventDefault()
+        FetchShips(search)
     }
 
-    const Submit = async (e: any) => {
-        e.preventDefault() 
+    const FetchShips = async (param : string) => {
         setIsLoading(true);
         
-        const url = `http://localhost:4000/api/ships/${search}`
+        const url = `http://localhost:4000/api/ships/${param}`
         
         const response = await fetch(url);
         const body = await response.json();
@@ -28,13 +29,18 @@ const SearchForm = ({setSearchResult, setIsLoading} : SearchFormProps) => {
         setSearchResult(body);
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const DebouncedCall = useCallback(_.debounce(e => FetchShips(e), 500), []);
+
     return (
         <FormContainer onSubmit={Submit}>
             <SearchInput 
                 type="text" 
                 placeholder="Search" value={search} 
-                onChange={e => setSearch(e.target.value)} 
-                onKeyUp={e => DoSearch(e)}/>
+                onChange={e => {
+                    setSearch(e.target.value)
+                    DebouncedCall(e.target.value);
+                }}/>
             { 
                 search &&
                 <ClearInputButton type="reset" onClick={() => setSearch("")}>
