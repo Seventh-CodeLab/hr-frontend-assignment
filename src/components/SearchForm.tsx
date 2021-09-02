@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import IShip from '../models/IShip';
 
@@ -10,18 +10,20 @@ type SearchFormProps = {
 
 const SearchForm = ({setSearchResult, setIsLoading} : SearchFormProps) => {
 
+    // Search-bar user input
     const [search, setSearch] = useState<string>("");
 
+    // Submit handles form submission events
     const Submit = (e : any) => {
         e.preventDefault()
         FetchShips(search)
     }
 
+    // FetchShips handles API calls and setting result state
     const FetchShips = async (param : string) => {
         setIsLoading(true);
         
         const url = `http://localhost:4000/api/ships/${param}`
-        
         const response = await fetch(url);
         const body = await response.json();
         
@@ -29,6 +31,7 @@ const SearchForm = ({setSearchResult, setIsLoading} : SearchFormProps) => {
         setSearchResult(body);
     }
 
+    // Callback method allows use of debounce in React Functional Components
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const DebouncedCall = useCallback(_.debounce(e => FetchShips(e), 500), []);
 

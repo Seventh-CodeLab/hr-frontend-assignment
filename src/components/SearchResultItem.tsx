@@ -18,7 +18,7 @@ const SearchResultItem = ({shipId, heading, body, yearOfConstruction, shipyard, 
     return (
         <>
             <ItemContainer onClick={toggleExpanded}>
-                <ItemExpansion>
+                <ItemExpansionButton>
                     <svg 
                         style={{rotate: expanded ? "180deg" : "0deg", transition: ".2s ease"}} 
                         width="16" height="16" 
@@ -30,7 +30,7 @@ const SearchResultItem = ({shipId, heading, body, yearOfConstruction, shipyard, 
                             d="M15.8536 11.8536C15.6583 12.0488 15.3417 12.0488 15.1464 11.8536L8 4.70711L0.853554 11.8536C0.658291 12.0488 0.341709 12.0488 0.146446 11.8536C-0.0488167 11.6583 -0.0488166 11.3417 0.146446 11.1464L7.64645 3.64645C7.84171 3.45118 8.15829 3.45118 8.35355 3.64645L15.8536 11.1464C16.0488 11.3417 16.0488 11.6583 15.8536 11.8536Z" />
                         </g>
                     </svg>
-                </ItemExpansion>
+                </ItemExpansionButton>
                 <ItemField>{heading}</ItemField>
                 <ItemField>{yearOfConstruction ? yearOfConstruction : "Unknown"}</ItemField>
                 <ItemField>{passengerCapacity ? passengerCapacity + " Passengers" : "Unknown"}</ItemField>
@@ -63,7 +63,7 @@ const ItemContainer = styled.div`
     }
 `
 
-const ItemExpansion = styled.div`
+const ItemExpansionButton = styled.div`
     width: 3em;
 `
 
